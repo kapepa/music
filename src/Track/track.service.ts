@@ -6,16 +6,19 @@ import {Comments, CommentsDocument} from "./Schema/comments.shema";
 import {CreateTrackDto} from "./Dto/track.dto";
 import {CommentTrackDto} from "./Dto/comment.dto";
 import * as mongoose from 'mongoose';
-
+import {FileService} from "../File/file.service";
 
 @Injectable()
 export class TrackService{
   constructor(
     @InjectModel(Track.name) private trackModel: Model<TrackDocument>,
-    @InjectModel(Comments.name) private CommentModel: Model<CommentsDocument>
+    @InjectModel(Comments.name) private CommentModel: Model<CommentsDocument>,
+    private fileService: FileService
   ) {}
   async createTrack(dto:CreateTrackDto): Promise<Track>{
-    return await this.trackModel.create({...dto, listener: 0})
+    const pathPicture = this.fileService.createFile(dto.picture);
+    const pathAudio = this.fileService.createFile(dto.audio)
+    return await this.trackModel.create({...dto, picture: pathPicture, audio: pathAudio, listener: 0})
   }
   async allTrack(): Promise<Track[]>{
     return this.trackModel.find({})
