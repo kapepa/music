@@ -20,8 +20,11 @@ export class TrackService{
     const pathAudio = this.fileService.createFile(dto.audio)
     return await this.trackModel.create({...dto, picture: pathPicture, audio: pathAudio, listener: 0})
   }
-  async allTrack(): Promise<Track[]>{
-    return this.trackModel.find({})
+  async allTrack(count: number = 10,offset: number = 0): Promise<Track[]>{
+    return this.trackModel.find({}).skip(offset).limit(count)
+  }
+  async search(name: string): Promise<Track[]>{
+    return this.trackModel.find({name: {$regex: new RegExp(name,"ig")}})
   }
   async oneTrack(id: mongoose.Schema.Types.ObjectId): Promise<Track>{
     return this.trackModel.findById(id).populate("comments")
@@ -35,5 +38,10 @@ export class TrackService{
     track.comments.push(comments._id)
     await track.save()
     return comments
+  }
+  async listen(id: mongoose.Schema.Types.ObjectId): Promise<void>{
+    const listenTrack = await this.trackModel.findById(id);
+    listenTrack.listener += 1;
+    await listenTrack.save();
   }
 }
