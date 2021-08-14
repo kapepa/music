@@ -1,24 +1,34 @@
-import {Controller, Get} from "@nestjs/common";
+import {Body, Controller, Get, Param, Post} from "@nestjs/common";
 import {TrackService} from "./track.service";
+import {Track} from "./Schema/track.shema";
+import {Comments} from "./Schema/comments.shema";
+import {CreateTrackDto} from "./Dto/track.dto";
+import * as mongoose from 'mongoose';
+import {CommentTrackDto} from "./Dto/comment.dto";
+
 
 @Controller("/track")
 export class TrackController{
   constructor(private readonly trackService: TrackService){}
 
-  @Get('/create')
-  createTrack(): string{
-    return  this.trackService.createTrack()
+  @Post('/create')
+  createTrack(@Body() dto:CreateTrackDto): Promise<Track>{
+    return this.trackService.createTrack(dto)
   }
   @Get('/all')
-  allTrack(): string{
+  allTrack(): Promise<Track[]>{
     return this.trackService.allTrack()
   }
-  @Get('/one')
-  oneTrack(): string{
-    return  this.trackService.oneTrack()
+  @Get('/one/:id')
+  oneTrack(@Param("id") id: mongoose.Schema.Types.ObjectId): Promise<Track>{
+    return this.trackService.oneTrack(id)
   }
-  @Get('/delete')
-  deleteTrack(): string{
-    return  this.trackService.deleteTrack()
+  @Get('/delete/:id')
+  deleteTrack(@Param("id") id: mongoose.Schema.Types.ObjectId): Promise<Track>{
+    return this.trackService.deleteTrack(id)
+  }
+  @Post('/comment')
+  commentTrack(@Body() dto: CommentTrackDto): Promise<Comments>{
+    return this.trackService.addComent(dto)
   }
 }

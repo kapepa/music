@@ -14,9 +14,6 @@ export class Track {
   artist: string;
 
   @Prop()
-  track: string;
-
-  @Prop()
   listener: number;
 
   @Prop()
@@ -25,7 +22,10 @@ export class Track {
   @Prop()
   audio: string;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Comments' })
+  @Prop()
+  text: string;
+
+  @Prop({type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comments' }]})
   comments: Comments[]
 }
 
