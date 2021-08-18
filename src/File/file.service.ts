@@ -2,6 +2,7 @@ import {Injectable} from "@nestjs/common";
 import * as path from 'path';
 import * as fs from 'fs';
 import * as uuid from 'uuid'
+import {Track} from "../Track/Schema/track.shema";
 
 @Injectable()
 export class FileService {
@@ -18,7 +19,12 @@ export class FileService {
       throw new Error(e.name)
     }
   }
-  removeFile(){
-
+  removeFile(pathFile: string): void{
+    try{
+      const pathToFile = path.resolve(__dirname,"../../../static/", pathFile)
+      if(fs.existsSync(pathToFile)) fs.unlinkSync(pathToFile)
+    }catch (e) {
+      throw  new Error(e.name)
+    }
   }
 }

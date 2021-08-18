@@ -29,9 +29,6 @@ export class TrackService{
   async oneTrack(id: mongoose.Schema.Types.ObjectId): Promise<Track>{
     return this.trackModel.findById(id).populate("comments")
   }
-  async deleteTrack(id: mongoose.Schema.Types.ObjectId): Promise<Track>{
-    return this.trackModel.findByIdAndDelete(id)
-  }
   async addComent(dto: CommentTrackDto): Promise<Comments> {
     const track = await this.trackModel.findById(dto.trackID)
     const comments = await this.CommentModel.create({...dto})
@@ -43,5 +40,11 @@ export class TrackService{
     const listenTrack = await this.trackModel.findById(id);
     listenTrack.listener += 1;
     await listenTrack.save();
+  }
+  async deleteTrack(id: mongoose.Schema.Types.ObjectId): Promise<Track>{
+    const track = await this.trackModel.findByIdAndDelete(id);
+    this.fileService.removeFile(track.picture)
+    this.fileService.removeFile(track.audio)
+    return track;
   }
 }

@@ -34,10 +34,6 @@ export class TrackController{
   oneTrack(@Param("id") id: mongoose.Schema.Types.ObjectId): Promise<Track>{
     return this.trackService.oneTrack(id)
   }
-  @Get('/delete/:id')
-  deleteTrack(@Param("id") id: mongoose.Schema.Types.ObjectId): Promise<Track>{
-    return this.trackService.deleteTrack(id)
-  }
   @Post('/comment')
   commentTrack(@Body() dto: CommentTrackDto): Promise<Comments>{
     return this.trackService.addComent(dto)
@@ -45,5 +41,9 @@ export class TrackController{
   @Post('/listen/:id')
   listen(@Param("id") id: mongoose.Schema.Types.ObjectId): void{
     this.trackService.listen(id)
+  }
+  @Get('/delete/:id')
+  deleteTrack(@Param("id") id: mongoose.Schema.Types.ObjectId): Promise<Track>{
+    return this.trackService.deleteTrack(id)
   }
 }
