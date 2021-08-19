@@ -5,6 +5,7 @@ export interface IComments {
 }
 
 export interface ITracks {
+  _id: string,
   name: string,
   artist: string,
   listener: number,
