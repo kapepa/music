@@ -1,3 +1,3 @@
- const BaseUrl = process.env.NODE_ENV === 'production' ? "" : "http://localhost:3000";
+ const BaseUrl = process.env.NODE_ENV === 'production' ? "" : "http://localhost:5000";
 
  export default BaseUrl;

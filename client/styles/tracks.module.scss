@@ -32,4 +32,69 @@
     display: flex;
     flex-direction: column;
   }
+  &__frame{
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+  }
+  &__more_detals{
+    display: flex;
+  }
+  &__picture{
+    width: 100px;
+    height: 100px;
+  }
+  &__desc{
+    display: flex;
+    flex-direction: column;
+    padding-left: 15px;
+    justify-content: space-around;
+    height: 100%;
+  }
+  &__text_container{
+    font-weight: bold;
+  }
+  &__thin{
+    font-weight: normal;
+  }
+  &__word_in_track{
+    display: flex;
+    flex-direction: column;
+  }
+  &__h6{
+    padding: 0;
+    margin: 0;
+    font-size: 20px;
+  }
+  &__middle{
+    padding: 20px 0;
+  }
+  &__latter{
+    margin-bottom: 10px;
+  }
+  &__comment{
+    display: flex;
+  }
+  &__comment_name{
+    padding-right: 10px;
+    font-weight: bold;
+    width: 70px;
+  }
+  &__form_comments{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+  }
+  &__form_input{
+    text-align: center;
+    height: 30px;
+    margin: 10px 0;
+  }
+  &__form_text{
+    resize: none;
+  }
+  &__comment_message{
+
+  }
+
 }
