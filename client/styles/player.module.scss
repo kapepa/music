@@ -1,0 +1,40 @@
+.player{
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 80px;
+  background-color: bisque;
+  &__area{
+    display: flex;
+    align-items: center;
+    height: 80px;
+    justify-content: center;
+  }
+  &__action{
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  &__name{
+    padding-left: 20px;
+  }
+  &__time{
+    padding-left: 30px;
+  }
+  &__volume{
+    display: flex;
+    padding-left: 50px;
+  }
+  &__progress{
+    display: flex;
+    &>input{
+      margin-left: 20px;
+    }
+  }
+  &__clock{
+    width: 95px;
+    display: flex;
+    justify-content: flex-end;
+  }
+}

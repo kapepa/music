@@ -13,8 +13,8 @@ const File: React.FC<IFile> = ({accept,callback}) => {
     refFile.current!.click();
   }
 
-  const fileLoad = (e:React.ChangeEvent<HTMLInputElement>) => {
-    callback(e.target.files[0])
+  const fileLoad = (e:React.ChangeEvent<HTMLInputElement>):void => {
+    if(e.target.files) callback(e.target.files[0])
   }
 
   return(

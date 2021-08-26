@@ -10,8 +10,8 @@ const CreateTrack:React.FC = () => {
     name: "",
     artist: "",
     text: "",
-    picture: {},
-    audio: {},
+    picture: {} ,
+    audio: {} ,
   })
 
   const forward = (): void => {
@@ -31,7 +31,7 @@ const CreateTrack:React.FC = () => {
   const writeText = (e:React.ChangeEvent<HTMLTextAreaElement>): void => {
     setTrack({...track, [e.target.name]: e.target.value})
   }
-  console.log(track)
+
   return (
     <MainLayout>
       <div className={styles.create}>
@@ -74,6 +74,7 @@ const CreateTrack:React.FC = () => {
             <Button onClick={forward}>Forward</Button>
         </div>
       </div>
+
     </MainLayout>
   )
 }

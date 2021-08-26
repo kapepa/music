@@ -5,6 +5,7 @@ import {Button} from "@material-ui/core";
 import {useRouter} from "next/router";
 import TrackList from "../../components/TrackList";
 import {IComments, ITracks} from "../../types/tracks";
+import Player from "../../components/Player/Player";
 
 const Track: React.FC = () => {
   const router = useRouter();
@@ -30,6 +31,16 @@ const Track: React.FC = () => {
       comments: []
     },
   ]
+  const player = {
+    _id: "43221",
+    name: "first",
+    artist: "One",
+    picture: "/picture/загружено (1).jpg",
+    audio: "/audio/Galibri & Mavik - Федерико Феллини.mp3",
+    active: false,
+    volume: .5,
+    time: 0,
+  }
   return (<MainLayout>
     <div className={style.tracks__create}>
       <Button onClick={() => {router.push("/track/create")}}>Load Track</Button>
@@ -38,6 +49,7 @@ const Track: React.FC = () => {
         <TrackList list={track}/>
       </div>
     </div>
+    <Player audio={player.audio} active={player.active} name={player.name} artist={player.artist} volume={player.volume} time={player.time}/>
   </MainLayout>)
 }
 
