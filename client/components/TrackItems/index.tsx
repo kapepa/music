@@ -5,27 +5,42 @@ import PlayCircleOutlineIcon from '@material-ui/icons/PlayCircleOutline';
 import PauseCircleOutlineIcon from '@material-ui/icons/PauseCircleOutline';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import {useRouter} from "next/router";
+import {playerSelector} from "../../store/selector/trackSelector";
+import {useDispatch, useSelector} from "react-redux";
+import {setTrack, trackPlay} from "../../store/slice/trackSlice";
 
 interface TrackItemsProps {
   track: ITracks,
-  active: boolean
 }
 
-const TrackItems: React.FC<TrackItemsProps> = ({track,active = false}) => {
-  const router = useRouter()
+const TrackItems: React.FC<TrackItemsProps> = ({track}) => {
+  const dispatch = useDispatch()
+  const router = useRouter();
+  const { name, active, time, duration } = useSelector(playerSelector);
+
+  const selectAndPlayTrack = (e: React.SyntheticEvent): void => {
+    e.stopPropagation();
+    dispatch(setTrack({name: track.name, audio: track.audio, active: true}))
+  }
+
+  const stopPlayTrack = (e: React.SyntheticEvent): void => {
+    e.stopPropagation();
+    dispatch(trackPlay(false));
+  }
+
   return (
     <div className={styles.tracks__single} onClick={() => {router.push('/track/'+ track._id)}}>
       <div className={styles.tracks__action}>
-        {active ?
+        {(track.name === name && active)  ?
           <PlayCircleOutlineIcon
             style={{ fontSize: 40 }}
             className={styles.tracks__btn}
-            onClick={(e) => {e.stopPropagation(); }}
+            onClick={stopPlayTrack}
           /> :
           <PauseCircleOutlineIcon
             style={{ fontSize: 40 }}
             className={styles.tracks__btn}
-            onClick={(e) => {e.stopPropagation(); }}
+            onClick={selectAndPlayTrack}
           />
         }
       </div>
@@ -34,7 +49,7 @@ const TrackItems: React.FC<TrackItemsProps> = ({track,active = false}) => {
         <div>Artist {track.artist}</div>
       </div>
       <div className={styles.tracks__time}>
-        {active && <div> 02:42 / 03:22 </div>}
+        {(track.name === name && active) && <div> {time} / {duration} </div>}
       </div>
       <div className={styles.tracks__trash}>
         <DeleteOutlineIcon

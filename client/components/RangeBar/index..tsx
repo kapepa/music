@@ -18,6 +18,7 @@ const RangeBar: React.FC<IRangeBar> = ({left,rigth,progress, name}) => {
     const wholeSec = timer - (wholeMin * 60)
     return `${wholeMin < 10 ? '0' + wholeMin : "" + wholeMin} :${ wholeSec < 10 ? '0' + wholeSec : "" + wholeSec }`;
   }
+
   return (
     <div className={style.player__progress}>
       <div className={style.player__clock}> { name === "player" ? calcTime(changeField) :  changeField } / { name === "player" ? calcTime(rigth) : rigth} </div>

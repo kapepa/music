@@ -34,9 +34,10 @@ const Player: React.FC<IPlayer> = ({audio, name,active, artist, volume,time}) =>
     refPlayer.current.src = `${BaseUrl}${audio}`;
     refPlayer.current.onloadedmetadata = (): void => setPlay({audio, name, artist, active: true, volume, time: 0, rigth: Math.round(refPlayer.current.duration)})
     refPlayer.current.volume = paly.volume;
-    refPlayer.current.play()
-    refPlayer.current.ontimeupdate = (): void => setPlay({...paly, time: Math.round(refPlayer.current.currentTime)})
-
+    refPlayer.current.ontimeupdate = (): void => setPlay({...paly, time: Math.round(refPlayer.current.currentTime), rigth: Math.round(refPlayer.current.duration)})
+    return () => {
+      refPlayer.current.pause()
+    }
   },[audio])
 
   const changeVolume = (volume: number): void => {

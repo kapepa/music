@@ -6,6 +6,7 @@ import {useRouter} from "next/router";
 import TrackList from "../../components/TrackList";
 import {IComments, ITracks} from "../../types/tracks";
 import Player from "../../components/Player/Player";
+import { wrapper } from '../../store/store';
 
 const Track: React.FC = () => {
   const router = useRouter();
@@ -52,5 +53,16 @@ const Track: React.FC = () => {
     <Player audio={player.audio} active={player.active} name={player.name} artist={player.artist} volume={player.volume} time={player.time}/>
   </MainLayout>)
 }
+
+// export const getServerSideProps = wrapper.getServerSideProps(store => async ({params}) => {
+//
+//   // console.log('State on server', store.getState());
+//
+//   return {
+//     props: {
+//       id: true,
+//     },
+//   };
+// });
 
 export default Track;

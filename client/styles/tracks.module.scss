@@ -31,6 +31,7 @@
   &__name{
     display: flex;
     flex-direction: column;
+    width: 200px;
   }
   &__frame{
     display: flex;
@@ -60,6 +61,9 @@
   &__word_in_track{
     display: flex;
     flex-direction: column;
+  }
+  &__time{
+    width: 100px;
   }
   &__h6{
     padding: 0;
