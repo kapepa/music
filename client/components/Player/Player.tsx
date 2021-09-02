@@ -1,11 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
 import styles from '../../styles/player.module.scss'
-import { Container } from "@material-ui/core";
+import {Container, duration} from "@material-ui/core";
 import PlayCircleOutlineIcon from "@material-ui/icons/PlayCircleOutline";
 import PauseCircleOutlineIcon from "@material-ui/icons/PauseCircleOutline";
 import RangeBar from "../RangeBar/index.";
 import { VolumeUp } from "@material-ui/icons";
 import BaseUrl from './../../../config'
+import {useDispatch} from "react-redux";
+import {trackPlay, setTrack, trackVolume} from "../../store/slice/trackSlice";
 
 interface IPlayer {
   audio: string,
@@ -13,44 +15,39 @@ interface IPlayer {
   artist: string,
   active: boolean,
   volume: number,
-  time: number
+  time: number,
+  duration: number
 }
 
-const Player: React.FC<IPlayer> = ({audio, name,active, artist, volume,time}) => {
-  const [paly, setPlay] = useState({
-    audio: "",
-    name: "",
-    artist: "",
-    active: false,
-    volume: 0.5,
-    time: 0,
-    rigth: 0,
-  })
-
+const Player: React.FC<IPlayer> = ({audio, name,active, artist, volume,time, duration}) => {
+  const dispatch = useDispatch();
   const refPlayer: any = useRef(null)
-
-  useEffect(() => {
-    if(refPlayer.current === null) refPlayer.current = new Audio()
-    refPlayer.current.src = `${BaseUrl}${audio}`;
-    refPlayer.current.onloadedmetadata = (): void => setPlay({audio, name, artist, active: true, volume, time: 0, rigth: Math.round(refPlayer.current.duration)})
-    refPlayer.current.volume = paly.volume;
-    refPlayer.current.ontimeupdate = (): void => setPlay({...paly, time: Math.round(refPlayer.current.currentTime), rigth: Math.round(refPlayer.current.duration)})
-    return () => {
-      refPlayer.current.pause()
-    }
-  },[audio])
 
   const changeVolume = (volume: number): void => {
     const improveVolume =  Number((+volume / 100).toFixed(2))
-    setPlay({...paly, volume: improveVolume});
+    dispatch(trackVolume(improveVolume));
     refPlayer.current.volume = improveVolume
   }
 
   const changePlayer = (player: number): void => {
     const changePlace = Math.round(+player);
-    setPlay({...paly, time: changePlace})
+    dispatch(setTrack({time: changePlace}))
     refPlayer.current.currentTime = changePlace
   }
+
+  useEffect(() => {
+    if(refPlayer.current === null) refPlayer.current = new Audio()
+    refPlayer.current.src = `${BaseUrl}${audio}`;
+    refPlayer.current.onloadedmetadata = (): void => {dispatch(setTrack({active: true, time: 0, duration: Math.round(refPlayer.current.duration)}))}
+    refPlayer.current.volume = volume;
+    refPlayer.current.ontimeupdate = (): void => {dispatch(setTrack({ time: Math.round(refPlayer.current.currentTime)}))}
+    refPlayer.current.onended = (): void => {dispatch(trackPlay(false))}
+    return () => refPlayer.current.pause()
+  },[audio])
+
+  useEffect(() => {
+    active ? refPlayer.current.play() : refPlayer.current.pause();
+  },[active])
 
   return (
     <div className={styles.player}>
@@ -61,12 +58,12 @@ const Player: React.FC<IPlayer> = ({audio, name,active, artist, volume,time}) =>
               <PlayCircleOutlineIcon
                 style={{ fontSize: 40 }}
                 className={styles.tracks__btn}
-                onClick={(e) => {e.stopPropagation(); }}
+                onClick={(e) => {e.stopPropagation(); dispatch(trackPlay(false))}}
               /> :
               <PauseCircleOutlineIcon
                 style={{ fontSize: 40 }}
                 className={styles.tracks__btn}
-                onClick={(e) => {e.stopPropagation(); }}
+                onClick={(e) => {e.stopPropagation(); dispatch(trackPlay(true))}}
               />
             }
           </div>
@@ -75,10 +72,11 @@ const Player: React.FC<IPlayer> = ({audio, name,active, artist, volume,time}) =>
             <div>Artist {artist}</div>
           </div>
           <div className={styles.player__time}>
-            <RangeBar left={paly.time} rigth={paly.rigth} progress={changePlayer} name={"player"}/>
+            <RangeBar left={time} rigth={duration} progress={changePlayer} name={"player"}/>
           </div>
+
           <div className={styles.player__volume}>
-            <RangeBar left={paly.volume * 100} rigth={100} progress={changeVolume} name={"volume"}/>
+            <RangeBar left={volume * 100} rigth={100} progress={changeVolume} name={"volume"}/>
             <VolumeUp />
           </div>
         </div>

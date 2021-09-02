@@ -22,7 +22,7 @@ const RangeBar: React.FC<IRangeBar> = ({left,rigth,progress, name}) => {
   return (
     <div className={style.player__progress}>
       <div className={style.player__clock}> { name === "player" ? calcTime(changeField) :  changeField } / { name === "player" ? calcTime(rigth) : rigth} </div>
-      <input type="range" value={left} max={rigth} onChange={ChangeProgress}/>
+      <input type="range" defaultValue={left} max={rigth} onChange={ChangeProgress}/>
     </div>
   )
 }

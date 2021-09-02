@@ -7,7 +7,7 @@ const initialState: IInitialStatePlayer = {
   name: "",
   artist: "",
   active: false,
-  volume: 0,
+  volume: 0.5,
   time: 0,
   duration: 0
 }

@@ -7,9 +7,12 @@ import TrackList from "../../components/TrackList";
 import {IComments, ITracks} from "../../types/tracks";
 import Player from "../../components/Player/Player";
 import { wrapper } from '../../store/store';
+import {useSelector} from "react-redux";
+import {playerSelector} from "../../store/selector/trackSelector";
 
 const Track: React.FC = () => {
   const router = useRouter();
+  const {active, artist, audio, duration, name, time, volume } = useSelector(playerSelector)
   const track: ITracks[] = [
     {
       _id: "43221",
@@ -50,7 +53,7 @@ const Track: React.FC = () => {
         <TrackList list={track}/>
       </div>
     </div>
-    <Player audio={player.audio} active={player.active} name={player.name} artist={player.artist} volume={player.volume} time={player.time}/>
+    <Player audio={audio} active={active} name={name} artist={artist} volume={volume} time={time} duration={duration}/>
   </MainLayout>)
 }
 

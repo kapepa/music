@@ -1,6 +1,6 @@
 export interface IInitialStatePlayer {
-  audio: string,
-  name: string,
+  audio?: string,
+  name?: string,
   active?: boolean,
   artist?: string,
   volume?: number,
