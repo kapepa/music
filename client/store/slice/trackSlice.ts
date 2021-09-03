@@ -1,9 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { HYDRATE } from 'next-redux-wrapper';
-import { IInitialStatePlayer } from '../../types/state'
-import {saveTrackData} from "../action/trackAction";
+import { IInitialStateTrack } from '../../types/state'
 
-const initialState: IInitialStatePlayer = {
+const initialState: IInitialStateTrack = {
   audio: "",
   name: "",
   artist: "",
@@ -15,7 +14,7 @@ const initialState: IInitialStatePlayer = {
 }
 
 export const trackSlice = createSlice({
-  name: 'player',
+  name: 'track',
   initialState,
   reducers: {
     trackPlay: (state,action: PayloadAction<boolean>) => {
@@ -24,7 +23,7 @@ export const trackSlice = createSlice({
     trackVolume: (state,action: PayloadAction<number>) => {
       state.volume = action.payload
     },
-    setTrack: (state,action: PayloadAction<IInitialStatePlayer>) => {
+    setTrack: (state,action: PayloadAction<IInitialStateTrack>) => {
       return state = {...state, ...action.payload};
     },
   },
@@ -35,12 +34,6 @@ export const trackSlice = createSlice({
         ...action.payload.subject,
       };
     },
-    [saveTrackData.pending.toString()]: (state, action: PayloadAction<null>) => {
-      state.loads = true
-    },
-    [saveTrackData.pending.toString()]: (state, action: PayloadAction<null>) => {
-      state.loads = false
-    }
   },
 })
 

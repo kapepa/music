@@ -1,8 +1,7 @@
 import {createSelector} from "@reduxjs/toolkit";
-import {IInitialStatePlayer} from "../../types/state";
 
 export const playerSelector = createSelector(
-  (state:any) => state.player,
+  (state:any) => state.track,
   (state) => state
 );
 

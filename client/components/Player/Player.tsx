@@ -37,11 +37,12 @@ const Player: React.FC<IPlayer> = ({audio, name,active, artist, volume,time, dur
 
   useEffect(() => {
     if(refPlayer.current === null) refPlayer.current = new Audio()
-    refPlayer.current.src = `${BaseUrl}${audio}`;
-    refPlayer.current.onloadedmetadata = (): void => {dispatch(setTrack({active: true, time: 0, duration: Math.round(refPlayer.current.duration)}))}
+    refPlayer.current.src = `${BaseUrl}/${audio}`;
+    refPlayer.current.onloadedmetadata = (): void => {dispatch(setTrack({active: true, artist, time: 0, duration: Math.round(refPlayer.current.duration)}))}
     refPlayer.current.volume = volume;
+    refPlayer.current.play()
     refPlayer.current.ontimeupdate = (): void => {dispatch(setTrack({ time: Math.round(refPlayer.current.currentTime)}))}
-    refPlayer.current.onended = (): void => {dispatch(trackPlay(false))}
+    refPlayer.current.onended = (): void => { dispatch(trackPlay(false))}
     return () => refPlayer.current.pause()
   },[audio])
 

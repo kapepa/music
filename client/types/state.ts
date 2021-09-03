@@ -1,4 +1,6 @@
-export interface IInitialStatePlayer {
+import {ITracks} from "./tracks";
+
+export interface IInitialStateTrack {
   audio?: string,
   name?: string,
   active?: boolean,
@@ -7,4 +9,9 @@ export interface IInitialStatePlayer {
   time?: number,
   duration?: number,
   loads?: boolean,
+}
+
+export interface IInitialStateList {
+  list: ITracks[] | any,
+  loads: boolean,
 }

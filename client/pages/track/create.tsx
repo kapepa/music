@@ -3,17 +3,17 @@ import MainLayout from "../../layouts/main";
 import styles from "../../styles/create.module.scss"
 import {Button} from "@material-ui/core";
 import File from "../../components/File/File";
-import {saveTrackData} from "../../store/action/trackAction";
+import {saveTrackData} from "../../store/action/listAction";
 import {useDispatch} from "react-redux";
 import {number} from "prop-types";
 
 const CreateTrack:React.FC = () => {
   const dispatch = useDispatch();
-  const [progrees, setProgrees] = useState(2)
+  const [progrees, setProgrees] = useState(1)
   const [track, setTrack] = useState({
-    name: "NewName",
-    artist: "NewName",
-    text: "NewText",
+    name: "",
+    artist: "",
+    text: "",
     picture: {} as any,
     audio: {} as any,
   })

@@ -1,12 +1,14 @@
 import { configureStore, ThunkAction } from '@reduxjs/toolkit';
 import { Action } from 'redux';
-import counterReducer from './slice/trackSlice';
+import trackSlice from './slice/trackSlice';
+import listSlice from './slice/listSlice';
 import { createWrapper } from 'next-redux-wrapper';
 
 const makeStore = () =>
   configureStore({
     reducer: {
-      [counterReducer.name]: counterReducer.reducer,
+      [trackSlice.name]: trackSlice.reducer,
+      [listSlice.name]: listSlice.reducer,
     },
     devTools: true,
   });

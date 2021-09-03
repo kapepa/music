@@ -16,11 +16,9 @@ export class TrackController{
     { name: 'picture', maxCount: 1 },
     { name: 'audio', maxCount: 1 },
   ]))
-  // createTrack(@UploadedFiles() files: Express.Multer.File[], @Body() dto:CreateTrackDto): Promise<Track>{
-  createTrack(@UploadedFiles() files: CreateTrackFileDto, @Body() dto:CreateTrackDto): any{
-    // const { picture, audio } = JSON.parse(JSON.stringify({...}))
-    console.log(files)
-    // return this.trackService.createTrack({...dto, picture: picture[0], audio: audio[0]})
+  createTrack(@UploadedFiles() files: Express.Multer.File[], @Body() dto:CreateTrackDto): Promise<Track>{
+    const { picture, audio } = JSON.parse(JSON.stringify(files))
+    return this.trackService.createTrack({...dto, picture: picture[0], audio: audio[0]})
   }
   @Get('/all')
   allTrack(@Query("count") count: number, @Query("offset") offset: number): Promise<Track[]>{
