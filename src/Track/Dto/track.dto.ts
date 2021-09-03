@@ -5,3 +5,8 @@ export class CreateTrackDto{
   readonly audio: Express.Multer.File;
   readonly picture: Express.Multer.File;
 }
+
+export class CreateTrackFileDto{
+  readonly audio: Express.Multer.File;
+  readonly picture: Express.Multer.File;
+}

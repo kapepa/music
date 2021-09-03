@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { HYDRATE } from 'next-redux-wrapper';
 import { IInitialStatePlayer } from '../../types/state'
+import {saveTrackData} from "../action/trackAction";
 
 const initialState: IInitialStatePlayer = {
   audio: "",
@@ -9,7 +10,8 @@ const initialState: IInitialStatePlayer = {
   active: false,
   volume: 0.5,
   time: 0,
-  duration: 0
+  duration: 0,
+  loads: false,
 }
 
 export const trackSlice = createSlice({
@@ -33,6 +35,12 @@ export const trackSlice = createSlice({
         ...action.payload.subject,
       };
     },
+    [saveTrackData.pending.toString()]: (state, action: PayloadAction<null>) => {
+      state.loads = true
+    },
+    [saveTrackData.pending.toString()]: (state, action: PayloadAction<null>) => {
+      state.loads = false
+    }
   },
 })
 

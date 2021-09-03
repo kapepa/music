@@ -3,16 +3,30 @@ import MainLayout from "../../layouts/main";
 import styles from "../../styles/create.module.scss"
 import {Button} from "@material-ui/core";
 import File from "../../components/File/File";
+import {saveTrackData} from "../../store/action/trackAction";
+import {useDispatch} from "react-redux";
+import {number} from "prop-types";
 
 const CreateTrack:React.FC = () => {
-  const [progrees, setProgrees] = useState(1)
+  const dispatch = useDispatch();
+  const [progrees, setProgrees] = useState(2)
   const [track, setTrack] = useState({
-    name: "",
-    artist: "",
-    text: "",
-    picture: {} ,
-    audio: {} ,
+    name: "NewName",
+    artist: "NewName",
+    text: "NewText",
+    picture: {} as any,
+    audio: {} as any,
   })
+
+  const sendTrack = (e: React.SyntheticEvent<HTMLElement>): void => {
+    const forma = new FormData();
+    forma.append("name",track.name)
+    forma.append("artist",track.artist)
+    forma.append("text",track.text)
+    forma.append("picture",track.picture)
+    forma.append("audio",track.audio)
+    dispatch(saveTrackData(forma));
+  }
 
   const forward = (): void => {
     if(progrees >= 3) return
@@ -56,7 +70,7 @@ const CreateTrack:React.FC = () => {
             <div className={styles.create__step_wrapper}>
               <h5 className={styles.create__cap}>Load Picture</h5>
               <div className={styles.create__desc}>
-                <File callback={(file: object):void => {setTrack({...track, picture: file})}} accept="image/*"/>
+                <File callback={(file: any):void => {setTrack({...track, picture: file})}} accept="image/*"/>
               </div>
             </div>
           }
@@ -64,14 +78,17 @@ const CreateTrack:React.FC = () => {
           <div className={styles.create__step_wrapper}>
             <h5 className={styles.create__cap}>Load Track</h5>
             <div className={styles.create__desc}>
-              <File callback={(file: object):void => {setTrack({...track, audio: file})}} accept="audio/*"/>
+              <File callback={(file: any):void => {setTrack({...track, audio: file})}} accept="audio/*"/>
             </div>
           </div>
           }
         </div>
         <div>
-            <Button onClick={backward}>Backward</Button>
-            <Button onClick={forward}>Forward</Button>
+          <Button onClick={backward}>Backward</Button>
+          {track.name !== "" && track.artist !== "" && track.picture.size && track.audio.size
+            ? <Button onClick={sendTrack}>Send</Button>
+            : <Button onClick={forward}>Forward</Button>
+          }
         </div>
       </div>
 

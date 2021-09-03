@@ -6,4 +6,5 @@ export interface IInitialStatePlayer {
   volume?: number,
   time?: number,
   duration?: number,
+  loads?: boolean,
 }

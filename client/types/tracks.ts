@@ -1,3 +1,5 @@
+import {saveTrackData} from "../store/action/trackAction";
+
 export interface IComments {
   username: string,
   text: string,
@@ -13,4 +15,12 @@ export interface ITracks {
   audio: string,
   text: string,
   comments: IComments[]
+}
+
+export interface ISaveTrackData {
+  name: string,
+  artist: string,
+  text: string,
+  picture: object ,
+  audio: object ,
 }
