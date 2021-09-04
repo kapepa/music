@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { HYDRATE } from 'next-redux-wrapper';
 import { IInitialStateList } from '../../types/state'
-import { saveTrackData, getAllTrack } from "../action/listAction";
+import { saveTrackData, getAllTrack, delTrack } from "../action/listAction";
 import { ITracks } from "../../types/tracks";
 
 const initialState: IInitialStateList = {
@@ -30,7 +30,14 @@ export const listSlice = createSlice({
       state.loads = true
     },
     [getAllTrack.fulfilled.toString()]: (state, action: PayloadAction<ITracks>) => {
+      state.loads = false;
+      state.list = action.payload;
+    },
+    [delTrack.pending.toString()]: (state) => {
       state.loads = true;
+    },
+    [delTrack.fulfilled.toString()]: (state, action: PayloadAction<ITracks>) => {
+      state.loads = false;
       state.list = action.payload;
     }
   },

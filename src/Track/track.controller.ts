@@ -1,4 +1,4 @@
-import {Body, Controller, Get, Param, Post, Query, UploadedFiles, UseInterceptors} from "@nestjs/common";
+import {Body, Controller, Delete, Get, Param, Post, Query, UploadedFiles, UseInterceptors} from "@nestjs/common";
 import {TrackService} from "./track.service";
 import {Track} from "./Schema/track.shema";
 import {Comments} from "./Schema/comments.shema";
@@ -42,8 +42,13 @@ export class TrackController{
   listen(@Param("id") id: mongoose.Schema.Types.ObjectId): void{
     this.trackService.listen(id)
   }
-  @Get('/delete/:id')
-  deleteTrack(@Param("id") id: mongoose.Schema.Types.ObjectId): Promise<Track>{
-    return this.trackService.deleteTrack(id)
+  @Delete('/delete/:id')
+  async deleteTrack(@Param("id") id: mongoose.Schema.Types.ObjectId): Promise<Track[]>{
+    try{
+      await this.trackService.deleteTrack(id)
+      return this.trackService.allTrack()
+    }catch (e){
+      throw e
+    }
   }
 }

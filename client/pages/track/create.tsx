@@ -5,7 +5,6 @@ import {Button} from "@material-ui/core";
 import File from "../../components/File/File";
 import {saveTrackData} from "../../store/action/listAction";
 import {useDispatch} from "react-redux";
-import {number} from "prop-types";
 
 const CreateTrack:React.FC = () => {
   const dispatch = useDispatch();
