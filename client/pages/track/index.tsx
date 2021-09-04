@@ -7,39 +7,33 @@ import TrackList from "../../components/TrackList";
 import {ITracks} from "../../types/tracks";
 import Player from "../../components/Player/Player";
 import { wrapper } from '../../store/store';
-import { useSelector } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {playerSelector} from "../../store/selector/trackSelector";
 import {getAllTrack} from "../../store/action/listAction";
+import {listSelector} from "../../store/selector/listSelector";
 
-interface IProps {
-  tracks: ITracks[]
-}
+interface IProps {}
 
-const Track: React.FC<IProps> = ({ tracks }) => {
+const Track: React.FC<IProps> = () => {
+  const dispatch = useDispatch()
   const router = useRouter();
+  const isList = useSelector(listSelector)
   const {active, artist, audio, duration, name, time, volume } = useSelector(playerSelector)
+
+  useEffect(() => {
+    dispatch(getAllTrack())
+  },[])
 
   return (<MainLayout>
     <div className={style.tracks__create}>
       <Button onClick={() => {router.push("/track/create")}}>Load Track</Button>
       <div className={style.tracks__list}>
         <h3>List Tracks</h3>
-        <TrackList list={tracks}/>
+        {isList.length && <TrackList list={isList}/>}
       </div>
     </div>
     <Player audio={audio} active={active} name={name} artist={artist} volume={volume} time={time} duration={duration}/>
   </MainLayout>)
 }
-
-export const getServerSideProps = wrapper.getServerSideProps(store => async (props) => {
-  await store.dispatch(getAllTrack())
-
-  const listTrack = store.getState();
-  return {
-    props: {
-      tracks: listTrack.list.list,
-    },
-  };
-});
 
 export default Track;
