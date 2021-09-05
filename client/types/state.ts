@@ -9,6 +9,7 @@ export interface IInitialStateTrack {
   time?: number,
   duration?: number,
   loads?: boolean,
+  _id?: string,
 }
 
 export interface IInitialStateList {

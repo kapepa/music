@@ -18,7 +18,7 @@ const Track: React.FC<IProps> = () => {
   const dispatch = useDispatch()
   const router = useRouter();
   const isList = useSelector(listSelector)
-  const {active, artist, audio, duration, name, time, volume } = useSelector(playerSelector)
+  const track = useSelector(playerSelector)
 
   useEffect(() => {
     dispatch(getAllTrack())
@@ -32,7 +32,7 @@ const Track: React.FC<IProps> = () => {
         {isList.length && <TrackList list={isList}/>}
       </div>
     </div>
-    <Player audio={audio} active={active} name={name} artist={artist} volume={volume} time={time} duration={duration}/>
+    <Player {...track}/>
   </MainLayout>)
 }
 

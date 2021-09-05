@@ -1,4 +1,4 @@
-import { createAsyncThunk } from '@reduxjs/toolkit'
+import {createAction, createAsyncThunk} from '@reduxjs/toolkit'
 import axios from '../../helpers/axiosHelpers'
 import {ITracks} from "../../types/tracks";
 
@@ -14,3 +14,9 @@ export const getAllTrack = createAsyncThunk('track/getAllTrack', async (): Promi
 export const delTrack = createAsyncThunk('track/delete', async (id: string): Promise<ITracks[]> => {
   return axios.delete(`/track/delete/${id}`).then(res => res.data);
 })
+
+export const listenTrack = createAsyncThunk('track/listen', async (id: string): Promise<void> => {
+  return  axios.post(`/track/listen/${id}`).then(res => res.data);
+})
+
+export const updateList = createAction<ITracks[]>('track/updates')

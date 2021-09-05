@@ -21,18 +21,13 @@ const TrackItems: React.FC<TrackItemsProps> = ({track}) => {
 
   const selectAndPlayTrack = (e: React.SyntheticEvent): void => {
     e.stopPropagation();
-    dispatch(setTrack({name: track.name, audio: track.audio, active: true}))
+    dispatch(setTrack({name: track.name, audio: track.audio, active: true, _id: track._id}))
   }
 
   const stopPlayTrack = (e: React.SyntheticEvent): void => {
     e.stopPropagation();
     dispatch(trackPlay(false));
   }
-
-  // const delTrack = (e): void => {
-  //   e.stopPropagation();
-  //   dispatch(delTrack("asdasdasdas"))
-  // }
 
   const sendTrack = (e: React.SyntheticEvent<HTMLElement>): void => {
     e.stopPropagation()

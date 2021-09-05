@@ -6,8 +6,11 @@ import PauseCircleOutlineIcon from "@material-ui/icons/PauseCircleOutline";
 import RangeBar from "../RangeBar/index.";
 import { VolumeUp } from "@material-ui/icons";
 import BaseUrl from './../../../config'
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {trackPlay, setTrack, trackVolume} from "../../store/slice/trackSlice";
+import {listenTrack, updateList} from "../../store/action/listAction";
+import { listSelector } from "../../store/selector/listSelector";
+import { ITracks } from "../../types/tracks";
 
 interface IPlayer {
   audio: string,
@@ -16,12 +19,14 @@ interface IPlayer {
   active: boolean,
   volume: number,
   time: number,
-  duration: number
+  duration: number,
+  _id: string,
 }
 
-const Player: React.FC<IPlayer> = ({audio, name,active, artist, volume,time, duration}) => {
+const Player: React.FC<IPlayer> = ({audio, name,active, artist, volume,time, duration, _id}) => {
   const dispatch = useDispatch();
   const refPlayer: any = useRef(null)
+  const isList = useSelector(listSelector)
 
   const changeVolume = (volume: number): void => {
     const improveVolume =  Number((+volume / 100).toFixed(2))
@@ -35,6 +40,15 @@ const Player: React.FC<IPlayer> = ({audio, name,active, artist, volume,time, dur
     refPlayer.current.currentTime = changePlace
   }
 
+  const addListen = () => {
+    const cloneList = JSON.parse(JSON.stringify(isList));
+    const indexListen  = cloneList.findIndex((track: ITracks) => track._id === _id);
+    cloneList.splice(indexListen,1,{...cloneList[indexListen], listener: ++ cloneList[indexListen].listener})
+    dispatch(trackPlay(false));
+    dispatch(listenTrack(_id));
+    dispatch(updateList(cloneList))
+  }
+
   useEffect(() => {
     if(refPlayer.current === null) refPlayer.current = new Audio()
     refPlayer.current.src = `${BaseUrl}/${audio}`;
@@ -42,7 +56,7 @@ const Player: React.FC<IPlayer> = ({audio, name,active, artist, volume,time, dur
     refPlayer.current.volume = volume;
     refPlayer.current.play()
     refPlayer.current.ontimeupdate = (): void => {dispatch(setTrack({ time: Math.round(refPlayer.current.currentTime)}))}
-    refPlayer.current.onended = (): void => { dispatch(trackPlay(false))}
+    refPlayer.current.onended = (): void => addListen()
     return () => refPlayer.current.pause()
   },[audio])
 

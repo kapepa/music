@@ -24,3 +24,8 @@ export interface ISaveTrackData {
   picture: object ,
   audio: object ,
 }
+
+export interface ICommentsTrack {
+  username: string,
+  text: string
+}
