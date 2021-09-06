@@ -12,7 +12,7 @@ import {FileService} from "../File/file.service";
 export class TrackService{
   constructor(
     @InjectModel(Track.name) private trackModel: Model<TrackDocument>,
-    @InjectModel(Comments.name) private CommentModel: Model<CommentsDocument>,
+    @InjectModel(Comments.name) private commentModel: Model<CommentsDocument>,
     private fileService: FileService
   ) {}
   async createTrack(dto:CreateTrackDto): Promise<Track>{
@@ -21,7 +21,9 @@ export class TrackService{
     return await this.trackModel.create({...dto, picture: pathPicture, audio: pathAudio, listener: 0})
   }
   async allTrack(count: number = 10,offset: number = 0): Promise<Track[]>{
-    return this.trackModel.find({}).skip(offset).limit(count)
+    return this.trackModel.aggregate([
+      {$lookup : {from : "comments", localField : "comments", foreignField : "_id", as : "comments"}},
+    ]).skip(offset).limit(count)
   }
   async search(name: string): Promise<Track[]>{
     return this.trackModel.find({name: {$regex: new RegExp(name,"ig")}})
@@ -30,8 +32,8 @@ export class TrackService{
     return this.trackModel.findById(id).populate("comments")
   }
   async addComent(dto: CommentTrackDto): Promise<Comments> {
-    const track = await this.trackModel.findById(dto.trackID)
-    const comments = await this.CommentModel.create({...dto})
+    const track = await this.trackModel.findById(dto.track)
+    const comments = await this.commentModel.create({...dto})
     track.comments.push(comments._id)
     await track.save()
     return comments

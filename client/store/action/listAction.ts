@@ -1,6 +1,6 @@
 import {createAction, createAsyncThunk} from '@reduxjs/toolkit'
 import axios from '../../helpers/axiosHelpers'
-import {ITracks} from "../../types/tracks";
+import {IComments, ITracks} from "../../types/tracks";
 
 
 export const saveTrackData = createAsyncThunk('track/SaveTrack', async (obj: FormData): Promise<any> => {
@@ -17,6 +17,10 @@ export const delTrack = createAsyncThunk('track/delete', async (id: string): Pro
 
 export const listenTrack = createAsyncThunk('track/listen', async (id: string): Promise<void> => {
   return  axios.post(`/track/listen/${id}`).then(res => res.data);
+})
+
+export const commentsTrack = createAsyncThunk('track/comments', async (obj:IComments): Promise<void> => {
+  return await axios.post('/track/comment',obj).then(res => res.data);
 })
 
 export const updateList = createAction<ITracks[]>('track/updates')

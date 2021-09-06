@@ -25,7 +25,7 @@ export class Track {
   @Prop()
   text: string;
 
-  @Prop({type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comments' }]})
+  @Prop({type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'comments' }]})
   comments: Comments[]
 }
 

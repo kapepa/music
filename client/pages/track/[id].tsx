@@ -5,8 +5,9 @@ import BaseUrl from "../../../config";
 import {Button} from "@material-ui/core";
 import {useRouter} from "next/router";
 import style from "../../styles/tracks.module.scss"
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {listSelector} from "../../store/selector/listSelector";
+import {commentsTrack} from "../../store/action/listAction";
 
 interface TrackPageProps {
   id: string;
@@ -14,21 +15,22 @@ interface TrackPageProps {
 
 const TrackPage: React.FC<TrackPageProps> = (id) => {
   const router = useRouter();
+  const dispatch = useDispatch();
   const isList = useSelector(listSelector);
-  const [comments, setComments] = useState({username: "", text: ""});
+  const [comments, setComments] = useState({username: "", text: "", track: ""});
   const [track, setTrack] = useState(() => {
     return {...isList.find( (el: ITracks) => el._id === router.query.id)}
   })
   const inputForm = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setComments({...comments, [e.target.name]: e.target.value })
+    setComments({...comments, [e.target.name]: e.target.value, track: track._id })
   }
   const textForm = (e: React.ChangeEvent<HTMLTextAreaElement>): void => {
-    setComments({...comments, [e.target.name]: e.target.value })
+    setComments({...comments, [e.target.name]: e.target.value, track: track._id})
   }
 
   const submitComment = (e: React.SyntheticEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    console.log(comments)
+    dispatch(commentsTrack(comments))
   }
 
   return (
