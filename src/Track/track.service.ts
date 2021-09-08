@@ -17,7 +17,7 @@ export class TrackService{
   ) {}
   async createTrack(dto:CreateTrackDto): Promise<Track>{
     const pathPicture = this.fileService.createFile(dto.picture);
-    const pathAudio = this.fileService.createFile(dto.audio)
+    const pathAudio = this.fileService.createFile(dto.audio);
     return await this.trackModel.create({...dto, picture: pathPicture, audio: pathAudio, listener: 0})
   }
   async allTrack(count: number = 10,offset: number = 0): Promise<Track[]>{
